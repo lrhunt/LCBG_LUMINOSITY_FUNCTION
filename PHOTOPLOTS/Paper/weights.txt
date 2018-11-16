@@ -1,0 +1,15 @@
+Good Spec=4, Bad Spec=19, Weight=5.75, magrange=15.0-15.5
+Good Spec=2, Bad Spec=9, Weight=5.5, magrange=15.5-16.0
+Good Spec=11, Bad Spec=2, Weight=1.18181818182, magrange=16.0-16.5
+Good Spec=23, Bad Spec=1, Weight=1.04347826087, magrange=16.5-17.0
+Good Spec=53, Bad Spec=3, Weight=1.05660377358, magrange=17.0-17.5
+Good Spec=75, Bad Spec=17, Weight=1.22666666667, magrange=17.5-18.0
+Good Spec=133, Bad Spec=29, Weight=1.21804511278, magrange=18.0-18.5
+Good Spec=316, Bad Spec=59, Weight=1.18670886076, magrange=18.5-19.0
+Good Spec=471, Bad Spec=91, Weight=1.1932059448, magrange=19.0-19.5
+Good Spec=776, Bad Spec=163, Weight=1.21005154639, magrange=19.5-20.0
+Good Spec=1149, Bad Spec=256, Weight=1.2228024369, magrange=20.0-20.5
+Good Spec=1769, Bad Spec=401, Weight=1.2266817411, magrange=20.5-21.0
+Good Spec=2648, Bad Spec=747, Weight=1.28209969789, magrange=21.0-21.5
+Good Spec=3830, Bad Spec=1326, Weight=1.34621409922, magrange=21.5-22.0
+Good Spec=4873, Bad Spec=2815, Weight=1.57767289144, magrange=22.0-22.5

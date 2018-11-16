@@ -1,0 +1,81 @@
+##############################################
+Informations about : Vmax
+##############################################
+
+#Parameters File : lf_zCOSMOS_FIXA.para
+#Input file (M+zs) : ../SHIFT_zCOSMOS_v2.8-3.3_err0.05_limits.out
+#Librairy (mag+kcorr) : PEGASE_ZCOSMOS 
+#Filter file : filter_zcosmos.dat
+
+#Cosmology (H0,om0,l0) :  70.000  0.250  0.750
+#Solid angle (arcmin^2) :     5045.800
+
+#Selected type :                         (template min :      0 ; template max :    100)
+#Reference filter    : 15
+#Redshift bins : 
+          num, zmin, zmax : 1  0.100  0.350
+          num, zmin, zmax : 2  0.350  0.550
+          num, zmin, zmax : 3  0.550  0.750
+          num, zmin, zmax : 4  0.750  1.000
+          num, zmin, zmax : 5  0.300  0.800
+
+
+##############################################
+RESULTS
+##############################################
+
+# 1 bin (  0.100  0.350 )
+Number of galaxies :      1968
+Apparent magnitude                                cut 22.500 15.000  in band 13
+M faint :  -15.0280
+M bright :  -22.2010
+M Bias :  -16.6033
+M bin number :  6 ; M bin size :    1.1955
+Output file : LF_Vmax_B_tot_FIXA0.dat
+
+---------------------------------------------
+
+# 2 bin (  0.350  0.550 )
+Number of galaxies :      2059
+Apparent magnitude                                cut 22.500 15.000  in band 13
+M faint :  -17.9050
+M bright :  -22.6020
+M Bias :  -18.9090
+M bin number :  6 ; M bin size :    0.7828
+Output file : LF_Vmax_B_tot_FIXA1.dat
+
+---------------------------------------------
+
+# 3 bin (  0.550  0.750 )
+Number of galaxies :      2163
+Apparent magnitude                                cut 22.500 15.000  in band 13
+M faint :  -19.1830
+M bright :  -23.3150
+M Bias :  -19.7812
+M bin number :  6 ; M bin size :    0.6887
+Output file : LF_Vmax_B_tot_FIXA2.dat
+
+---------------------------------------------
+
+# 4 bin (  0.750  1.000 )
+Number of galaxies :      1769
+Apparent magnitude                                cut 22.500 15.000  in band 13
+M faint :  -18.2610
+M bright :  -23.6860
+M Bias :  -20.3429
+M bin number :  6 ; M bin size :    0.9042
+Output file : LF_Vmax_B_tot_FIXA3.dat
+
+---------------------------------------------
+
+# 5 bin (  0.300  0.800 )
+Number of galaxies :      5249
+Apparent magnitude                                cut 22.500 15.000  in band 13
+M faint :  -17.7180
+M bright :  -23.3150
+M Bias :  -18.6692
+M bin number :  6 ; M bin size :    0.9328
+Output file : LF_Vmax_B_tot_FIXA4.dat
+
+---------------------------------------------
+
