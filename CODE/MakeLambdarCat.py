@@ -6,6 +6,7 @@ from astropy.coordinates import SkyCoord
 import kcorrect
 import kcorrect.utils as ut
 from astropy.cosmology import FlatLambdaCDM
+import os
 
 #*********************************************
 #*** Defining Cosmology
@@ -18,8 +19,14 @@ cosmo=FlatLambdaCDM(H0=70,Om0=0.3)
 #*********************************************
 
 print('Reading in Catalogs')
-COSMOS_PHOT_LAMBDAR=pd.read_csv('/home/lrhunt/CATALOGS/PHOT/G10CosmosLAMBDARCatv05.csv')
-TASCA_COSMOS_MORPH=pd.read_csv('/home/lrhunt/CATALOGS/PHOT/TASCA_MORPH.tsv',delim_whitespace=True,header=53,dtype=float,error_bad_lines=False)
+COSMOS_PHOT_LAMBDAR=pd.read_csv('/Users/lucashunt/ASTRODATA/LCBG_LUMINOSITY_FUNCTION/COSMOS_CATALOGS/Photometry/G10CosmosLAMBDARCatv05.csv')
+TASCA_COSMOS_MORPH=pd.read_csv('/Users/lucashunt/ASTRODATA/LCBG_LUMINOSITY_FUNCTION/COSMOS_CATALOGS/Morphology/MORPH.tsv',delim_whitespace=True,header=53,dtype=float,error_bad_lines=False)
+
+#*********************************************
+#*** Setting Variables
+#*********************************************
+
+kcordir=os.environ["KCORRECT_DIR"]
 
 #*********************************************
 #*********************************************
@@ -43,7 +50,10 @@ G10_COORD=SkyCoord(ra=COSMOS_PHOT_LAMBDAR['RA'].values*u.degree,dec=COSMOS_PHOT_
 idx,d2d,d3d=G10_COORD.match_to_catalog_sky(TASCA_COORD)
 COSMOS_PHOT_LAMBDAR['Rh']=TASCA_COSMOS_MORPH['Rh'][idx].values
 COSMOS_PHOT_LAMBDAR['separation']=d2d.arcsecond
-COSMOS_FLUXES=COSMOS_PHOT_LAMBDAR[COSMOS_PHOT_LAMBDAR.separation<1]
+#Changed line below to calculate the "Surface Brightness Completeness". How many sources have Rh is important in determining weights.
+COSMOS_PHOT_LAMBDAR.loc[COSMOS_PHOT_LAMBDAR.separation>1,'Rh']=np.nan
+COSMOS_FLUXES=COSMOS_PHOT_LAMBDAR
+
 
 #*********************************************
 #*********************************************
@@ -109,9 +119,7 @@ allinvervar=np.stack((COSMOS_FLUXES.uinvervar.values,COSMOS_FLUXES.binvervar.val
 carr=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),6))
 rmarr=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),7))
 rmarr0=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),7))
-rmarr0B=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),7))
-rmarr0V=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),7))
-rmarr0U=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),7))
+rmarr0UBV=np.ndarray((len(COSMOS_FLUXES.bmaggies.values),4))
 
 #*********************************************
 #*********************************************
@@ -126,10 +134,8 @@ print('Computing k-corrections and estimated magnitudes')
 #*** Loading filter list (total k-correction)
 #*********************************************
 
-
 kcorrect.load_templates()
-kcorrect.load_filters('/home/lrhunt/programs/kcorrect/data/templates/Lum_Func_Filters_US.dat')
-
+kcorrect.load_filters(kcordir+'/data/templates/Lum_Func_Filters_US.dat')
 for i in range(0,len(carr)):
 	carr[i]=kcorrect.fit_nonneg(COSMOS_FLUXES.Z_BEST.values[i],allmaggies[i],allinvervar[i])
 for i in range(0,len(carr)):
@@ -141,40 +147,40 @@ for i in range(0,len(carr)):
 #*********************************************
 
 kcorrect.load_templates()
-kcorrect.load_filters('/home/lrhunt/programs/kcorrect/data/templates/BESSEL_B2.dat')
+kcorrect.load_filters(kcordir+'/data/templates/bessell_ubv.dat')
 
 for i in range(0,len(carr)):
-	rmarr0B[i]=kcorrect.reconstruct_maggies(carr[i],redshift=0)
+	rmarr0UBV[i]=kcorrect.reconstruct_maggies(carr[i],redshift=0)
 
 #*********************************************
 #*** Loading filter list (apparent V mag for each object)
 #*********************************************
 
-kcorrect.load_templates()
-kcorrect.load_filters('/home/lrhunt/programs/kcorrect/data/templates/BESSEL_V2.dat')
+#kcorrect.load_templates()
+#kcorrect.load_filters('/home/lrhunt/programs/kcorrect/data/templates/BESSEL_V2.dat')
 
-for i in range(0,len(carr)):
-	rmarr0V[i]=kcorrect.reconstruct_maggies(carr[i],redshift=0)
+#for i in range(0,len(carr)):
+#	rmarr0V[i]=kcorrect.reconstruct_maggies(carr[i],redshift=0)
 
 #*********************************************
 #*** Loading filter list (apparent u mag for each object)
 #*********************************************
 
-kcorrect.load_templates()
-kcorrect.load_filters('/home/lrhunt/programs/kcorrect/data/templates/BESSEL_U2.dat')
+#kcorrect.load_templates()
+#kcorrect.load_filters('/home/lrhunt/programs/kcorrect/data/templates/BESSEL_U2.dat')
 
-for i in range(0,len(carr)):
-	rmarr0U[i]=kcorrect.reconstruct_maggies(carr[i],redshift=0)
+#for i in range(0,len(carr)):
+#	rmarr0U[i]=kcorrect.reconstruct_maggies(carr[i],redshift=0)
 
 #*********************************************
 #*** Convert from corrected maggies back to k-correction
 #*********************************************
 
 kcorr=-2.5*np.log10(rmarr/rmarr0)
-kcorrM=-2.5*np.log10(rmarr/rmarr0B)
-corrB=-2.5*np.log10(rmarr0B)+0.09
-corrV=-2.5*np.log10(rmarr0V)-0.02
-corrU=-2.5*np.log10(rmarr0U)-0.79
+kcorrM=-2.5*np.log10(rmarr/np.stack((rmarr0UBV[:,0],rmarr0UBV[:,2],rmarr0UBV[:,2],rmarr0UBV[:,2],rmarr0UBV[:,2],rmarr0UBV[:,2],rmarr0UBV[:,2]),axis=-1))
+corrB=-2.5*np.log10(rmarr0UBV[:,2])+0.09
+corrV=-2.5*np.log10(rmarr0UBV[:,3])-0.02
+corrU=-2.5*np.log10(rmarr0UBV[:,1])-0.79
 
 #*********************************************
 #*********************************************
@@ -183,7 +189,7 @@ corrU=-2.5*np.log10(rmarr0U)-0.79
 #*********************************************
 
 M=np.zeros_like(COSMOS_FLUXES.Z_BEST.values)
-bv=corrB[:,3]-corrV[:,4]
+bv=corrB-corrV
 #M=corrB[:,3]-cosmo.distmod(COSMOS_FLUXES.Z_BEST.values).value
 for i in range(0,len(COSMOS_FLUXES.Z_BEST.values)):
 	if COSMOS_FLUXES.Z_BEST.values[i]<=0.1:
@@ -209,9 +215,9 @@ SBe=M+2.5*np.log10((2*np.pi*np.power(cosmo.angular_diameter_distance(COSMOS_FLUX
 #*********************************************
 
 
-COSMOS_FLUXES.loc[:,'corrected_B']=corrB[:,2]
-COSMOS_FLUXES.loc[:,'corrected_V']=corrV[:,2]
-COSMOS_FLUXES.loc[:,'corrected_u']=corrU[:,2]
+COSMOS_FLUXES.loc[:,'corrected_B']=corrB
+COSMOS_FLUXES.loc[:,'corrected_V']=corrV
+COSMOS_FLUXES.loc[:,'corrected_u']=corrU
 COSMOS_FLUXES.loc[:,'k_subB-B']=kcorr[:,2]
 COSMOS_FLUXES.loc[:,'k_subV-B']=kcorr[:,3]
 COSMOS_FLUXES.loc[:,'k_subr-B']=kcorr[:,4]
@@ -228,7 +234,7 @@ LCBG[wherelcbg]=1
 COSMOS_FLUXES['is_LCBG']=LCBG
 
 
-COSMOS_FLUXES.to_csv('COSMOS_LAMBDAR_CATALOG.csv')
+COSMOS_FLUXES.to_csv('/Users/lucashunt/ASTRODATA/LCBG_LUMINOSITY_FUNCTION/COSMOS_CATALOGS/Photometry/COSMOS_CONVERTED_CATALOG.csv')
 
 
 
