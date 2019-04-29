@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
 # Taking the LAIGLE spectroscopic catalog to make a full catalog with selected LCBGs
@@ -114,7 +114,7 @@ cosmo=FlatLambdaCDM(H0=70,Om0=0.3)
 
 
 kcordir=os.environ["KCORRECT_DIR"]
-catbasedir=os.environ["COSMOS_DIR"].split('Original')[0]+'/Final_Catalogs'
+catbasedir=os.environ["COSMOS_DIR"]+'/Final_Catalogs'
 
 
 # In[7]:
@@ -246,7 +246,7 @@ for i in indexes:
     Spec_Cat.loc[i,
                  ['UJ0_synthetic_maggies',
                  'BJ0_synthetic_maggies',
-                  'Vj0_synthetic_maggies']
+                  'VJ0_synthetic_maggies']
                 ]=kcorrect.reconstruct_maggies(Spec_Cat.loc[i,
                                                             'c1':'c6']
                                                                      ,redshift=0)[1:]
@@ -289,7 +289,7 @@ Spec_Cat[[f.split('_')[0]+'_kcorr_BJ0'
               Spec_Cat['BJ0_synthetic_maggies'],
               Spec_Cat['BJ0_synthetic_maggies'],
               Spec_Cat['BJ0_synthetic_maggies'],
-              Spec_Cat['BJ0_synthetic_maggies']),axies=-1))
+              Spec_Cat['BJ0_synthetic_maggies']),axis=-1))
 
 
 # In[ ]:
