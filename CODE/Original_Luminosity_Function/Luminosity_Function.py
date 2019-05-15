@@ -18,6 +18,8 @@ import os
 import pandas as pd
 
 
+# python Luminosity_Function.py /Users/lucashunt/ASTRODATA/LCBG_LUMINOSITY_FUNCTION/COSMOS_CATALOGS/Final_Catalogs/Laigle_LCBG_Catalog.csv -mbin 18 -zmin 0.01 -zmax 0.2 -mmin -24 -mmax -15 -ama 23 -ami 15 -om 0.3 -ho 70
+
 # In[2]:
 
 
@@ -41,7 +43,7 @@ args=parser.parse_args()
 
 # Setting values needed throughout the code
 
-# In[4]:
+# In[3]:
 
 
 cosmo=FlatLambdaCDM(H0=args.HubbleConstant,Om0=args.OmegaMatter)
@@ -66,15 +68,51 @@ CATALOG['Spec_Weight']=np.nan
 CATALOG['Color_Weight']=np.nan
 CATALOG['Surface_Brightness_Weight']=np.nan
 for magrange in Magnitude_Loop_Array:
-    Num_Good_Spec=len(CATALOG[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0)&((CATALOG.Z_USE==1)|(CATALOG.Z_USE==2))])
-    Num_Bad_Spec=len(CATALOG[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0)&((CATALOG.Z_USE==3)|(CATALOG.Z_USE==4))])
-    Num_Good_Color=len(CATALOG[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0)&((CATALOG.mag_subaru_B<100)&(CATALOG.mag_subaru_V<100))])
-    Num_Bad_Color=len(CATALOG[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0)&((CATALOG.mag_subaru_B>100)|(CATALOG.mag_subaru_V>100))])
-    Num_Bad_Rh=len(CATALOG[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0)&(np.isnan(CATALOG.Rh))])
-    Num_Good_Rh=len(CATALOG[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0)&(~np.isnan(CATALOG.Rh))])
-    CATALOG.loc[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0),'Spec_Weight']=float(Num_Good_Spec+Num_Bad_Spec)/float(Num_Good_Spec)
-    CATALOG.loc[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0),'Color_Weight']=float(Num_Good_Color+Num_Bad_Color)/float(Num_Good_Color)
-    CATALOG.loc[(CATALOG.mag_subaru_i>magrange[0])&(CATALOG.mag_subaru_i<magrange[1])&(CATALOG.SG_MASTER==0),'Surface_Brightness_Weight']=float(Num_Good_Rh+Num_Bad_Rh)/float(Num_Good_Rh)
+    Num_Good_Spec=len(CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                              (CATALOG.subaru_i_mag<magrange[1])&
+                              (CATALOG.SG_MASTER==0)&
+                              ((CATALOG.Z_USE==1)|
+                               (CATALOG.Z_USE==2))])
+    Num_Bad_Spec=len(CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                             (CATALOG.subaru_i_mag<magrange[1])&
+                             (CATALOG.SG_MASTER==0)&
+                             ((CATALOG.Z_USE==3)|
+                              (CATALOG.Z_USE==4))])
+    Num_Good_Color=len(CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                               (CATALOG.subaru_i_mag<magrange[1])&
+                               (CATALOG.SG_MASTER==0)&
+                               ((CATALOG.subaru_B_mag<100)&
+                                (CATALOG.subaru_V_mag<100))])
+    Num_Bad_Color=len(CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                              (CATALOG.subaru_i_mag<magrange[1])&
+                              (CATALOG.SG_MASTER==0)&
+                              ((CATALOG.subaru_B_mag>100)|
+                               (CATALOG.subaru_V_mag>100))])
+    Num_Bad_Rh=len(CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                           (CATALOG.subaru_i_mag<magrange[1])&
+                           (CATALOG.SG_MASTER==0)&
+                           (np.isnan(CATALOG.R_HALF_PIXELS))])
+    Num_Good_Rh=len(CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                            (CATALOG.subaru_i_mag<magrange[1])&
+                            (CATALOG.SG_MASTER==0)&
+                            (~np.isnan(CATALOG.R_HALF_PIXELS))])
+    CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                (CATALOG.subaru_i_mag<magrange[1])&
+                (CATALOG.SG_MASTER==0),
+                'Spec_Weight']=float(Num_Good_Spec+Num_Bad_Spec)/float(Num_Good_Spec)
+    CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                (CATALOG.subaru_i_mag<magrange[1])&
+                (CATALOG.SG_MASTER==0),
+                'Color_Weight']=float(Num_Good_Color+Num_Bad_Color)/float(Num_Good_Color)
+    CATALOG.loc[(CATALOG.subaru_i_mag>magrange[0])&
+                (CATALOG.subaru_i_mag<magrange[1])&
+                (CATALOG.SG_MASTER==0),
+                'Surface_Brightness_Weight']=float(Num_Good_Rh+Num_Bad_Rh)/float(Num_Good_Rh)
+    print('Spec Weight = {} | Color Weight = {} | Surface Brightness Weight = {}'.format(
+        np.round(float(Num_Good_Spec+Num_Bad_Spec)/float(Num_Good_Spec),4),
+        np.round(float(Num_Good_Color+Num_Bad_Color)/float(Num_Good_Color),4),
+        np.round(float(Num_Good_Rh+Num_Bad_Rh)/float(Num_Good_Rh),4)))
+
     
 
 
@@ -84,14 +122,32 @@ for magrange in Magnitude_Loop_Array:
 
 # Breaking up the large catalog into a smaller one containing the sources over the correct redshift range and apparent magnitude range
 
+# In[ ]:
+
+
+CATALOG['is_LCBG']=0
+CATALOG.loc[(CATALOG.BJ0_vega_absmag.values<-18.5)&(CATALOG.BJ0_vega_surface_brightness.values<21)&(CATALOG['rest_frame_B-V'].values<0.6),'is_LCBG']=1
+
+
 # In[7]:
 
 
 print('********LOOKING FOR LCBGS********')
 if args.LCBGLIST:
-    LUMFUNC_CATALOG=CATALOG[(CATALOG.Z_USE<3)&(CATALOG.mag_subaru_i<=args.appmax)&(CATALOG.mag_subaru_i>=args.appmin)&(CATALOG.SG_MASTER==0)&(CATALOG.Z_BEST>=args.zmin)&(CATALOG.Z_BEST<=args.zmax)&(CATALOG.is_LCBG==1)]
+    LUMFUNC_CATALOG=CATALOG.loc[(CATALOG.Z_USE<3)&
+                            (CATALOG.subaru_i_mag<=args.appmax)&
+                            (CATALOG.subaru_i_mag>=args.appmin)&
+                            (CATALOG.SG_MASTER==0)&
+                            (CATALOG.Z_BEST>=args.zmin)&
+                            (CATALOG.Z_BEST<=args.zmax)&
+                            (CATALOG.is_LCBG==1)]
 else:
-    LUMFUNC_CATALOG=CATALOG[(CATALOG.Z_USE<3)&(CATALOG.mag_subaru_i<=args.appmax)&(CATALOG.mag_subaru_i>=args.appmin)&(CATALOG.SG_MASTER==0)&(CATALOG.Z_BEST>=args.zmin)&(CATALOG.Z_BEST<=args.zmax)]
+    LUMFUNC_CATALOG=CATALOG.loc[(CATALOG.Z_USE<3)&
+                            (CATALOG.subaru_i_mag<=args.appmax)&
+                            (CATALOG.subaru_i_mag>=args.appmin)&
+                            (CATALOG.SG_MASTER==0)&
+                            (CATALOG.Z_BEST>=args.zmin)&
+                            (CATALOG.Z_BEST<=args.zmax)]
 
 
 # Setting apparent magnitude limits to calculate the range over which this source would be detected. 
@@ -107,7 +163,7 @@ for x in LUMFUNC_CATALOG.index:
     rmarrlookup=np.ndarray(1000)
     for j in range(0,1000):
         rmarrlookup[j]=kcorrect.reconstruct_maggies(LUMFUNC_CATALOG.loc[x,'c1':'c6'],redshift=zlookup[j])[1:]
-    AbsMag=LUMFUNC_CATALOG.mag_subaru_i.loc[x]-cosmo.distmod(LUMFUNC_CATALOG.Z_BEST.loc[x]).value-LUMFUNC_CATALOG.subaru_i_synthetic_mag.loc[x]-2.5*np.log10(rmarrlookup[0])
+    AbsMag=LUMFUNC_CATALOG.subaru_i_mag.loc[x]-cosmo.distmod(LUMFUNC_CATALOG.Z_BEST.loc[x]).value-LUMFUNC_CATALOG.subaru_i_synthetic_mag.loc[x]-2.5*np.log10(rmarrlookup[0])
     ilookup=AbsMag+cosmo.distmod(zlookup).value-2.5*np.log10(rmarrlookup)+2.5*np.log10(rmarrlookup[0])
     LUMFUNC_CATALOG.loc[x,'upper_redshift']=round(zlookup[np.abs(ilookup-args.appmax).argmin()],4)
     LUMFUNC_CATALOG.loc[x,'lower_redshift']=round(zlookup[np.abs(ilookup-args.appmin).argmin()],4)
@@ -134,22 +190,96 @@ AveCMV=[]
 AveWeight=[]
 for rng in Abs_Magnitude_Loop_Array:
     if args.LCBGLIST:
-        NUMB_DENS_LIST.append(((LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']*LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Color_Weight']*LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Surface_Brightness_Weight'])/(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'comoving_volume']*mbinsize)).sum())
-        AveWeight.append((LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']*LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Color_Weight']*LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Surface_Brightness_Weight']).sum()/len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']))
-        NUMB_DENS_Err.append(np.sqrt(((LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']*LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Color_Weight']*LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Surface_Brightness_Weight'])/(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'comoving_volume']*mbinsize)**2).sum()))
+        NUMB_DENS_LIST.append(((
+            LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                'Spec_Weight']
+            *LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                'Color_Weight']
+            *LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                'Surface_Brightness_Weight'])
+            /(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                  (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                  'comoving_volume']*mbinsize)).sum())
+        AveWeight.append(((
+            LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                'Spec_Weight']
+            *LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                 (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                 'Color_Weight']
+            *LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                 (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                 'Surface_Brightness_Weight']).sum()
+            /len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                     (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                     'Spec_Weight'])))
+        NUMB_DENS_Err.append(
+            np.sqrt(
+                (
+                    (LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                         (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                         'Spec_Weight']*
+                     LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                         (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                         'Color_Weight']*
+                     LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                         (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                         'Surface_Brightness_Weight'])
+                    /(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                          (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1])
+                                          ,'comoving_volume']*mbinsize)**2).sum()))
     else:
-        NUMB_DENS_LIST.append((LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']/(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'comoving_volume']*mbinsize)).sum())
-        NUMB_DENS_Err.append(np.sqrt((LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']/(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'comoving_volume']*mbinsize)**2).sum()))
-        AveWeight.append(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight'].sum()/len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']))
-    NGal.append(len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']))
-    AveCMV.append(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'comoving_volume'].sum()/len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Spec_Weight']))
-    Abs_Mags.append(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.Abs_B_Mag>rng[0])&(LUMFUNC_CATALOG.Abs_B_Mag<rng[1]),'Abs_B_Mag'].mean())
+        NUMB_DENS_LIST.append(
+            (LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                 (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                 'Spec_Weight']
+             /(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                   (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                   'comoving_volume']*
+               mbinsize)).sum())
+        NUMB_DENS_Err.append(np.sqrt(
+            (LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                 (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                 'Spec_Weight']
+             /(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                   (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                   'comoving_volume']
+               *mbinsize)**2).sum()))
+        AveWeight.append(
+            LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                             (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                'Spec_Weight'].sum()/
+            len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                    (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                    'Spec_Weight']))
+    NGal.append(
+        len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                'Spec_Weight']))
+    AveCMV.append(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                      (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                      'comoving_volume'].sum()
+                  /len(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                           (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                           'Spec_Weight']))
+    Abs_Mags.append(LUMFUNC_CATALOG.loc[(LUMFUNC_CATALOG.BJ0_vega_absmag>rng[0])&
+                                        (LUMFUNC_CATALOG.BJ0_vega_absmag<rng[1]),
+                                        'BJ0_vega_absmag'].mean())
 
 
 # In[51]:
 
 
-Luminosity_Function=pd.DataFrame({'Number_Of_Gals':NGal,'Absolute_Magnitude_Bin':np.average(Abs_Magnitude_Loop_Array,axis=-1),'Average_Absolute_Magnitude':Abs_Mags,'Number_Density':NUMB_DENS_LIST,'Number_Density_Error':NUMB_DENS_Err,'Average_Comoving_Volume':AveCMV,'Average_Weight':AveWeight})
+Luminosity_Function=pd.DataFrame(
+    {'Number_Of_Gals':NGal,'Absolute_Magnitude_Bin':np.average(Abs_Magnitude_Loop_Array,axis=-1),
+     'Average_Absolute_Magnitude':Abs_Mags,
+     'Number_Density':NUMB_DENS_LIST,
+     'Number_Density_Error':NUMB_DENS_Err,
+     'Average_Comoving_Volume':AveCMV,
+     'Average_Weight':AveWeight})
 
 
 # In[52]:
