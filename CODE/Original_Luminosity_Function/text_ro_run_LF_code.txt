@@ -1,0 +1,39 @@
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.1 -zmax 0.35 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/zucca_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.1 -zmax 0.35 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/zucca_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.35 -zmax 0.55 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/zucca_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.35 -zmax 0.55 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/zucca_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.55 -zmax 0.75 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/zucca_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.55 -zmax 0.75 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/zucca_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.75 -zmax 1.0 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/zucca_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.75 -zmax 1.0 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/zucca_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.3 -zmax 0.8 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/zucca_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.3 -zmax 0.8 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/zucca_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.01 -zmax 0.2 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/orig_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.01 -zmax 0.2 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/orig_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.2 -zmax 0.4 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/orig_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.2 -zmax 0.4 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/orig_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.4 -zmax 0.6 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/orig_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.4 -zmax 0.6 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/orig_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.6 -zmax 0.8 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/orig_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.6 -zmax 0.8 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/orig_z_bins
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.8 -zmax 1.0 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/LCBGLFOUT/apmag225/orig_z_bins -LCBG
+
+python Luminosity_Function.py /home/lrhunt/Astrodata/LCBG_Luminosity_Function/Original_Catalogs/Final_Catalogs/COSMOS_CONVERTED_CATALOG.csv -mbin 18 -zmin 0.8 -zmax 1.0 -mmin -24 -mmax -15 -ama 22.5 -ami 15 -om 0.3 -ho 70 -lfdir /home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/apmag225/orig_z_bins

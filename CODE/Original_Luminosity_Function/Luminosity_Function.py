@@ -34,7 +34,7 @@ parser.add_argument("-ama","--appmax",type=float,help='Maximum apparent magnitud
 parser.add_argument("-ami","--appmin",type=float,help='Minimum apparent magnitude to consider part of the survey COSMOS i>15',default=15)
 parser.add_argument("-om","--OmegaMatter",type=float,help="Omega Matter, if you want to define your own cosmology", default=0.3)
 parser.add_argument("-ho","--HubbleConstant",type=float,help="Hubble Constant if you want to define your own cosmology",default=70)
-parser.add_argument("-lfdir","--lfdir",help="Directroy you want to put the Luminosity Function txt file and the underlying catalog in",default='/Users/lucashunt/projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/')
+parser.add_argument("-lfdir","--lfdir",help="Directroy you want to put the Luminosity Function txt file and the underlying catalog in",default='/home/lrhunt/Projects/LCBG_LUMINOSITY_FUNCTION/FULLLFOUT/')
 parser.add_argument("-fileout","--fileout",type=str,help="Set a string if you want to give a filename if not it will default to LF_zmin_zmax.csv",default='')
 parser.add_argument("-LCBG","--LCBGLIST",action="store_true",help="Make Luminosity Function with LCBGs only?")
 parser.add_argument("-nv","--novega",action="store_true",help="Do not apply correction to switch from AB to Vega magnitudes")
